@@ -2,7 +2,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.x-blue)
 ![Status](https://img.shields.io/badge/status-concluído-success)
-![License](https://img.shields.io/badge/license-MIT-green)
+
 
 ## 📌 Descrição
 
