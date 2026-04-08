@@ -25,6 +25,39 @@ mapa_indices = {
     2023: [0, 2, 3, 5, 6, 8]
 }
 
+
+# Mapeamento de siglas para nomes completos
+mapa_times = {
+    "AMM": "América Mineiro",
+    "ATP": "Athletico Paranaense",
+    "ATM": "Atlético Mineiro",
+    "ATG": "Atlético Goianiense",
+    "BAH": "Bahia",
+    "BOT": "Botafogo",
+    "COR": "Corinthians",
+    "CTB": "Coritiba",
+    "CRU": "Cruzeiro",
+    "CUI": "Cuiabá",
+    "FLA": "Flamengo",
+    "FLU": "Fluminense",
+    "FOR": "Fortaleza",
+    "GOI": "Goiás",
+    "GRE": "Grêmio",
+    "INT": "Internacional",
+    "PAL": "Palmeiras",
+    "RBB": "Red Bull Bragantino",
+    "SAN": "Santos",
+    "SPA": "São Paulo",
+    "VAS": "Vasco da Gama",
+    "VIT": "Vitória",
+    "CEA": "Ceará",
+    "JUV": "Juventude",
+    "CRI": "Criciúma",
+    "MIR": "Mirassol",
+    "SPT": "Sport"
+}
+
+
 # Header para evitar bloqueio do request (simula navegador)
 headers = {
     "User-Agent": "Mozilla/5.0"
@@ -74,7 +107,11 @@ for ANO in anos:
                 rows = table.find_all("tr")
 
                 # Primeira linha contém os times visitantes
-                header = [th.get_text(strip=True) for th in rows[0].find_all("th")][1:]
+                header_raw = [th.get_text(strip=True) for th in rows[0].find_all("th")][1:]
+
+                # Converte sigla → nome completo
+                header = [mapa_times.get(time, time) for time in header_raw]
+
 
                 # Escreve cabeçalho apenas uma vez
                 if not cabecalho_escrito.get(idx_padrao):
@@ -106,7 +143,7 @@ for ANO in anos:
                         writer.writerow([mandante, placar, visitante, ANO])
 
                 continue  # pula para próxima tabela
-
+            
             # =========================
             # TRATAMENTO PADRÃO (OUTRAS TABELAS)
             # =========================
@@ -131,6 +168,12 @@ for ANO in anos:
                     # Extrai texto da célula
                     text = cell.get_text(strip=True)
 
+                    # Remove (C) e (F) do placar na tabela de Hat-tricks
+                    if idx_padrao == 5:
+                        text = text.replace("(C)", "").replace("(F)", "").strip()
+                    
+                   
+
                     # Verifica rowspan e colspan
                     rowspan = int(cell.get("rowspan", 1))
                     colspan = int(cell.get("colspan", 1))
@@ -153,13 +196,19 @@ for ANO in anos:
 
                 # Se a linha tiver conteúdo
                 if cols:
-
+                     # Remove [número] de todas as colunas (ex: Asst.[29] -> Asst.)
+                    cols = [col.split("[")[0].strip() for col in cols]
                     # Detecta coluna "Ref." na tabela Hat_tricks
                     if idx_padrao == 5 and r == 0:
                         for idx, col in enumerate(cols):
                             if "ref" in col.lower():
                                 ref_index = idx
                                 break
+                    
+                    # Tratamento da coluna "Títulos" na tabela Participantes
+                    if idx_padrao == 0 and r > 0 and len(cols) > 6:
+                        cols[6] = cols[6].strip()[0] if cols[6] else cols[6]
+                     
 
                     # Remove a coluna "Ref."
                     if idx_padrao == 5 and ref_index is not None and len(cols) > ref_index:
