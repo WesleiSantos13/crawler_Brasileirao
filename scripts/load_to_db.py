@@ -4,19 +4,24 @@ from app.database.models import Time, Confronto
 
 db = SessionLocal()
 
-df = pd.read_csv("data/raw/Confrontos.csv")
+df = pd.read_csv("data/Confrontos.csv")
 
-times = set(df["Mandante"]).union(set(df["Visitante"]))
+# 🔹 Buscar times já existentes
+times_existentes = {t.nome: t.id for t in db.query(Time).all()}
 
+# 🔹 Criar novos times sem duplicar
 mapa_ids = {}
 
-for nome in times:
-    time = Time(nome=nome)
-    db.add(time)
-    db.commit()
-    db.refresh(time)
-    mapa_ids[nome] = time.id
+for nome in set(df["Mandante"]).union(set(df["Visitante"])):
+    if nome in times_existentes:
+        mapa_ids[nome] = times_existentes[nome]
+    else:
+        time = Time(nome=nome)
+        db.add(time)
+        db.flush()  # pega ID sem commit
+        mapa_ids[nome] = time.id
 
+# 🔹 Inserir confrontos
 for _, row in df.iterrows():
     try:
         g1, g2 = map(int, row["Placar"].replace("–", "x").replace("-", "x").split("x"))
@@ -33,6 +38,7 @@ for _, row in df.iterrows():
 
     db.add(confronto)
 
+# 🔹 Um único commit
 db.commit()
 db.close()
 
