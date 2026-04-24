@@ -17,3 +17,17 @@ class Confronto(Base):
     gols_mandante = Column(Integer)
     gols_visitante = Column(Integer)
     ano = Column(Integer)
+
+
+from sqlalchemy import Column, Integer, String, ForeignKey
+from app.database.connection import Base
+
+class Artilharia(Base):
+    __tablename__ = "artilharia"
+
+    id = Column(Integer, primary_key=True)
+    posicao = Column(Integer)
+    jogador = Column(String)
+    time_id = Column(Integer, ForeignKey("times.id"))
+    gols = Column(Integer)
+    ano = Column(Integer)
