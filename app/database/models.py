@@ -19,9 +19,6 @@ class Confronto(Base):
     ano = Column(Integer)
 
 
-from sqlalchemy import Column, Integer, String, ForeignKey
-from app.database.connection import Base
-
 class Artilharia(Base):
     __tablename__ = "artilharia"
 
@@ -30,4 +27,18 @@ class Artilharia(Base):
     jogador = Column(String)
     time_id = Column(Integer, ForeignKey("times.id"))
     gols = Column(Integer)
+    ano = Column(Integer)
+
+
+class Participante(Base):
+    __tablename__ = "participantes"
+
+    id = Column(Integer, primary_key=True)
+    nome = Column(String)
+    cidade = Column(String)
+    estado = Column(String)
+    posicao_anterior = Column(String)
+    estadio = Column(String)
+    capacidade = Column(Integer)
+    titulos = Column(Integer)
     ano = Column(Integer)
