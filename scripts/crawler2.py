@@ -11,6 +11,7 @@ from app.database.connection import SessionLocal, engine, Base
 from app.database.models import Time, Confronto, Artilharia, Participante
 
 # cria as tabelas no banco
+Base.metadata.drop_all(bind=engine)  # cuidado: apaga tudo
 Base.metadata.create_all(bind=engine)
 
 # Lista de anos que serão coletados

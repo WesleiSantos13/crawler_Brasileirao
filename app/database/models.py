@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from app.database.connection import Base
+from sqlalchemy.orm import relationship
 
 class Time(Base):
     __tablename__ = "times"
@@ -28,17 +29,20 @@ class Artilharia(Base):
     time_id = Column(Integer, ForeignKey("times.id"))
     gols = Column(Integer)
     ano = Column(Integer)
+    time = relationship("Time")
 
 
 class Participante(Base):
     __tablename__ = "participantes"
 
     id = Column(Integer, primary_key=True)
-    nome = Column(String)
+    time_id = Column(Integer, ForeignKey("times.id"))
     cidade = Column(String)
     estado = Column(String)
     posicao_anterior = Column(String)
     estadio = Column(String)
-    capacidade = Column(Integer)
+    capacidade = Column(String)
     titulos = Column(Integer)
     ano = Column(Integer)
+
+    time = relationship("Time")
