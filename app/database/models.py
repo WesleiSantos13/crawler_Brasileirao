@@ -46,3 +46,32 @@ class Participante(Base):
     ano = Column(Integer)
 
     time = relationship("Time")
+
+
+class Assistencia(Base):
+    __tablename__ = "assistencias"
+
+    id = Column(Integer, primary_key=True)
+    posicao = Column(Integer)
+    jogador = Column(String)
+    time_id = Column(Integer, ForeignKey("times.id"))
+    assistencias = Column(Integer)
+    ano = Column(Integer)
+
+    time = relationship("Time")
+
+
+class HatTrick(Base):
+    __tablename__ = "hat_tricks"
+
+    id = Column(Integer, primary_key=True)
+    jogador = Column(String)
+    time_id = Column(Integer, ForeignKey("times.id"))
+    adversario_id = Column(Integer, ForeignKey("times.id"))
+    gols_time = Column(Integer)
+    gols_adversario = Column(Integer)
+    data = Column(String)
+    ano = Column(Integer)
+
+    time = relationship("Time", foreign_keys=[time_id])
+    adversario = relationship("Time", foreign_keys=[adversario_id])
