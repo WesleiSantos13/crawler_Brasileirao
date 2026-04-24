@@ -75,3 +75,23 @@ class HatTrick(Base):
 
     time = relationship("Time", foreign_keys=[time_id])
     adversario = relationship("Time", foreign_keys=[adversario_id])
+
+
+class Classificacao(Base):
+    __tablename__ = "classificacao"
+
+    id = Column(Integer, primary_key=True)
+    posicao = Column(Integer)
+    time_id = Column(Integer, ForeignKey("times.id"))
+    pontos = Column(Integer)
+    jogos = Column(Integer)
+    vitorias = Column(Integer)
+    empates = Column(Integer)
+    derrotas = Column(Integer)
+    gols_pro = Column(Integer)
+    gols_contra = Column(Integer)
+    saldo = Column(String)
+    situacao = Column(String)
+    ano = Column(Integer)
+
+    time = relationship("Time")

@@ -6,9 +6,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import requests
 from bs4 import BeautifulSoup
 
-# 🔹 conexão com banco
+#  conexão com banco
 from app.database.connection import SessionLocal, engine, Base
-from app.database.models import Time, Confronto, Artilharia, Participante, Assistencia, HatTrick
+from app.database.models import Time, Confronto, Artilharia, Participante, Assistencia, HatTrick, Classificacao
 
 # recria tabelas
 Base.metadata.drop_all(bind=engine)
@@ -70,9 +70,10 @@ def get_time_id(nome):
             mapa_ids[nome] = novo.id
     return mapa_ids[nome]
 
-# 🔥 parser com rowspan (ESSENCIAL)
-def parse_table(table):
+#  parser com rowspan 
+def parse_table(table, idx_padrao):
     rowspan_map = {}
+    ref_index = None
     rows = table.find_all("tr")
     result = []
 
@@ -82,11 +83,16 @@ def parse_table(table):
 
         for cell in row.find_all(["td", "th"]):
 
+            # Preenche rowspan pendente
             while (r, col_index) in rowspan_map:
                 cols.append(rowspan_map[(r, col_index)])
                 col_index += 1
 
             text = cell.get_text(strip=True)
+
+            #  remove (C) e (F) nos hat-tricks
+            if idx_padrao == 5:
+                text = text.replace("(C)", "").replace("(F)", "").strip()
 
             rowspan = int(cell.get("rowspan", 1))
             colspan = int(cell.get("colspan", 1))
@@ -100,12 +106,34 @@ def parse_table(table):
 
                 col_index += 1
 
+        # completa rowspan restante
         while (r, col_index) in rowspan_map:
             cols.append(rowspan_map[(r, col_index)])
             col_index += 1
 
+        # =========================
+        #  TRATAMENTOS IMPORTANTES
+        # =========================
         if cols:
-            cols = [c.split("[")[0].strip() for c in cols]
+
+            # remove [1], [2], etc
+            cols = [col.split("[")[0].strip() for col in cols]
+
+            # detecta coluna Ref no hat-tricks
+            if idx_padrao == 5 and r == 0:
+                for idx, col in enumerate(cols):
+                    if "ref" in col.lower():
+                        ref_index = idx
+                        break
+
+            # remove coluna Ref
+            if idx_padrao == 5 and ref_index is not None and len(cols) > ref_index:
+                cols.pop(ref_index)
+
+            # corrige coluna títulos
+            if idx_padrao == 0 and r > 0 and len(cols) > 6:
+                cols[6] = cols[6].strip()[0] if cols[6] else cols[6]
+
             result.append(cols)
 
     return result
@@ -171,7 +199,7 @@ for ANO in anos:
         # =========================
         # OUTRAS TABELAS (COM ROWSPAN)
         # =========================
-        data = parse_table(table)
+        data = parse_table(table, idx_padrao)
 
         if len(data) < 2:
             continue
@@ -287,6 +315,52 @@ for ANO in anos:
                     gols_time=g1,
                     gols_adversario=g2,
                     data=data_jogo,
+                    ano=ANO
+                ))
+        
+        # =========================
+        # CLASSIFICACAO
+        # =========================
+        if idx_padrao == 1:
+            for row in data[1:]:
+
+                if len(row) < 10:
+                    continue
+
+                try:
+                    pos = int(row[0])
+                except:
+                    continue
+
+                # limpa nome do time (remove (C), (R), etc)
+                time = row[1].replace("(C)", "").replace("(R)", "").strip()
+
+                try:
+                    pontos = int(row[2])
+                    jogos = int(row[3])
+                    vitorias = int(row[4])
+                    empates = int(row[5])
+                    derrotas = int(row[6])
+                    gp = int(row[7])
+                    gc = int(row[8])
+                    saldo = row[9]
+                except:
+                    continue
+
+                situacao = row[10] if len(row) > 10 else ""
+
+                db.add(Classificacao(
+                    posicao=pos,
+                    time_id=get_time_id(time),
+                    pontos=pontos,
+                    jogos=jogos,
+                    vitorias=vitorias,
+                    empates=empates,
+                    derrotas=derrotas,
+                    gols_pro=gp,
+                    gols_contra=gc,
+                    saldo=saldo,
+                    situacao=situacao,
                     ano=ANO
                 ))
 
