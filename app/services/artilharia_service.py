@@ -1,5 +1,5 @@
 from app.database.connection import SessionLocal
-from app.database.models import Artilharia, Time
+from app.database.models import Artilharia
 
 def listar_artilharia():
     db = SessionLocal()
