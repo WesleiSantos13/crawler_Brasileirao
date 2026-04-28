@@ -19,7 +19,6 @@ def listar_classificacao():
             "gols_pro": c.gols_pro,
             "gols_contra": c.gols_contra,
             "saldo": c.saldo,
-            "status": c.status,
             "ano": c.ano
         })
 
