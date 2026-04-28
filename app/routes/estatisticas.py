@@ -37,3 +37,22 @@ def estatisticas_time(nome):
         "empates": empates,
         "derrotas": derrotas
     })
+
+
+
+@stats_bp.route("/stats/melhor-ataque", methods=["GET"])
+def melhor_ataque():
+    dados = listar_confrontos()
+
+    gols = {}
+
+    for j in dados:
+        gols[j["mandante"]] = gols.get(j["mandante"], 0) + j["gols_mandante"]
+        gols[j["visitante"]] = gols.get(j["visitante"], 0) + j["gols_visitante"]
+
+    melhor = max(gols, key=gols.get)
+
+    return jsonify({
+        "time": melhor,
+        "gols": gols[melhor]
+    })
