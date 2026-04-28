@@ -12,10 +12,13 @@ def listar_hattricks():
             "jogador": h.jogador,
             "time": h.time.nome if h.time else None,
             "adversario": h.adversario.nome if h.adversario else None,
-            "placar": f"{h.gols_time}x{h.gols_adversario}",  
+            "gols_time": h.gols_time,
+            "gols_adversario": h.gols_adversario,
             "data": h.data,
             "ano": h.ano
         })
 
     db.close()
     return resultado
+
+
