@@ -19,6 +19,9 @@ class Confronto(Base):
     gols_visitante = Column(Integer)
     ano = Column(Integer)
 
+    mandante = relationship("Time", foreign_keys=[mandante_id])
+    visitante = relationship("Time", foreign_keys=[visitante_id])
+
 
 class Artilharia(Base):
     __tablename__ = "artilharia"
