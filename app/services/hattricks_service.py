@@ -12,7 +12,7 @@ def listar_hattricks():
             "jogador": h.jogador,
             "time": h.time.nome if h.time else None,
             "adversario": h.adversario.nome if h.adversario else None,
-            "placar": h.placar,
+            "placar": f"{h.gols_time}x{h.gols_adversario}",  
             "data": h.data,
             "ano": h.ano
         })
