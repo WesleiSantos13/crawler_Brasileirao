@@ -22,6 +22,7 @@ def participantes_por_ano(ano):
 
 
 #Buscar participações por nome do time
+#https://crawlerbrasileirao-production.up.railway.app/participantes/time/flamengo
 @participantes_bp.route("/participantes/time/<nome>", methods=["GET"])
 def participante_por_time(nome):
     dados = listar_participantes()
