@@ -15,7 +15,7 @@ def get_artilharia():
 # =========================
 # 2. TOP ARTILHEIROS
 # =========================
-
+# https://crawlerbrasileirao-production.up.railway.app/artilharia/top
 @artilharia_bp.route("/artilharia/top", methods=["GET"])
 def top_artilharia():
     top = request.args.get("top", 5, type=int)
@@ -28,6 +28,7 @@ def top_artilharia():
 # =========================
 # 3. FILTRAR POR ANO
 # =========================
+#https://crawlerbrasileirao-production.up.railway.app/artilharia/2023
 @artilharia_bp.route("/artilharia/ano/<int:ano>", methods=["GET"])
 def artilharia_por_ano(ano):
     dados = listar_artilharia()
