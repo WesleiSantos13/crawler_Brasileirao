@@ -31,6 +31,9 @@ def top_artilharia():
 def artilharia_por_ano(ano):
     dados = listar_artilharia()
 
-    filtrado = [a for a in dados if a["ano"] == ano]
+    filtrado = []
+    for a in dados:
+        if a["ano"] == ano:
+            filtrado.append(a)
 
     return jsonify(filtrado)
