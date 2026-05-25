@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Brasileirão</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Brasileirão</h2>
+            <nav>
+                <button onclick="carregarDados('classificacao')">Classificação</button>
+                <button onclick="carregarDados('artilharia')">Artilharia</button>
+                <button onclick="carregarDados('assistencias')">Assistências</button>
+                <button onclick="carregarDados('confrontos')">Confrontos</button>
+                <button onclick="carregarDados('hattricks')">Hat-tricks</button>
+                <button onclick="carregarDados('times')">Times</button>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <h1 id="titulo-pagina">Visão Geral</h1>
+            </header>
+            
+            <section id="conteudo">
+                <p>Selecione uma opção no menu ao lado para carregar os dados.</p>
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
