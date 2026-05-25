@@ -1,5 +1,5 @@
-from app.database.connection import SessionLocal
-from app.database.models import Time
+from backend.app.database.connection import SessionLocal
+from backend.app.database.models import Time
 
 def listar_times():
     db = SessionLocal()

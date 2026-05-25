@@ -1,9 +1,9 @@
 from flask import Blueprint, jsonify, request
-from app.services.confrontos_service import listar_confrontos
+from backend.app.services.confrontos_service import listar_confrontos
 from operator import itemgetter
 
-from app.database.connection import SessionLocal
-from app.database.models import Time
+from backend.app.database.connection import SessionLocal
+from backend.app.database.models import Time
 
 confrontos_bp = Blueprint("confrontos", __name__)
 

@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from operator import itemgetter
-from app.services.classificacao_service import listar_classificacao
+from backend.app.services.classificacao_service import listar_classificacao
 
 classificacao_bp = Blueprint("classificacao", __name__)
 

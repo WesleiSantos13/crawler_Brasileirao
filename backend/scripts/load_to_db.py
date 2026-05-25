@@ -1,6 +1,6 @@
 import pandas as pd
-from app.database.connection import SessionLocal
-from app.database.models import Time, Confronto
+from backend.app.database.connection import SessionLocal
+from backend.app.database.models import Time, Confronto
 
 db = SessionLocal()
 

@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from app.services.times_service import listar_times
+from backend.app.services.times_service import listar_times
 
 times_bp = Blueprint("times", __name__)
 

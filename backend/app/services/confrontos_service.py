@@ -1,5 +1,5 @@
-from app.database.connection import SessionLocal
-from app.database.models import Confronto
+from backend.app.database.connection import SessionLocal
+from backend.app.database.models import Confronto
 
 def listar_confrontos():
     db = SessionLocal()

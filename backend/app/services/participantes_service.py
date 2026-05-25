@@ -1,5 +1,5 @@
-from app.database.connection import SessionLocal
-from app.database.models import Participante
+from backend.app.database.connection import SessionLocal
+from backend.app.database.models import Participante
 
 def listar_participantes():
     db = SessionLocal()

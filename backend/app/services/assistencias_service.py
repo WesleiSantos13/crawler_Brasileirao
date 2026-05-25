@@ -1,5 +1,5 @@
-from app.database.connection import SessionLocal
-from app.database.models import Assistencia
+from backend.app.database.connection import SessionLocal
+from backend.app.database.models import Assistencia
 
 def listar_assistencias():
     db = SessionLocal()

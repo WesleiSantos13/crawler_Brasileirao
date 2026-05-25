@@ -7,8 +7,8 @@ import requests
 from bs4 import BeautifulSoup
 
 #  conexão com banco
-from app.database.connection import SessionLocal, engine, Base
-from app.database.models import Time, Confronto, Artilharia, Participante, Assistencia, HatTrick, Classificacao
+from backend.app.database.connection import SessionLocal, engine, Base
+from backend.app.database.models import Time, Confronto, Artilharia, Participante, Assistencia, HatTrick, Classificacao
 
 # recria tabelas
 Base.metadata.drop_all(bind=engine)
