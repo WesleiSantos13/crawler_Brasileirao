@@ -8,29 +8,53 @@
 </head>
 <body>
 
-    <div class="container">
-        <aside class="sidebar">
-            <h2>Brasileirão Info</h2>
-            <nav>
-                <button onclick="carregarDados('classificacao')">Classificação</button>
-                <button onclick="carregarDados('artilharia')">Artilharia</button>
-                <button onclick="carregarDados('assistencias')">Assistências</button>
-                <button onclick="carregarDados('confrontos')">Confrontos</button>
-                <button onclick="carregarDados('hattricks')">Hat-tricks</button>
-                <button onclick="carregarDados('times')">Times</button>
-            </nav>
-        </aside>
+    <nav class="top-nav">
+        <button onclick="carregarDados('artilharia')">Artilheiros</button>
+        <button onclick="carregarDados('participantes')">Participantes</button>
+        <button onclick="carregarDados('hattricks')">Hat-tricks</button>
+        <button onclick="carregarDados('classificacao')">Classificação</button>
+        <button onclick="carregarDados('confrontos')">Confrontos</button>
+        <button onclick="carregarDados('assistencias')">Assistências</button>
+    </nav>
 
-        <main class="main-content">
-            <header>
-                <h1 id="titulo-pagina">Visão Geral</h1>
-            </header>
+    <main class="container">
+        
+        <section class="estatisticas-section">
+            <h2>Estatísticas Gerais</h2>
             
-            <section id="conteudo">
-                <p>Selecione uma opção no menu ao lado para carregar os dados.</p>
-            </section>
-        </main>
-    </div>
+            <div class="filtro-ano">
+                <input type="number" id="input-ano" placeholder="Digite o ano (Ex: 2023)" value="2023">
+                <button class="btn-atualizar" onclick="atualizarEstatisticas()">Atualizar por Ano</button>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>👑 Atual Campeão</h3>
+                    <p id="card-campeao" class="valor-card">---</p>
+                </div>
+                <div class="card">
+                    <h3>⚽ Maior Artilheiro</h3>
+                    <p id="card-artilheiro" class="valor-card">---</p>
+                </div>
+                <div class="card">
+                    <h3>👟 Líder de Assistência</h3>
+                    <p id="card-assistencia" class="valor-card">---</p>
+                </div>
+                <div class="card">
+                    <h3>🔥 Destaque Hat-tricks</h3>
+                    <p id="card-hattrick" class="valor-card">---</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="tabela-section">
+            <h2 id="titulo-pagina">Tabela de Dados</h2>
+            <div id="conteudo">
+                <p style="text-align: center; color: #666;">Selecione uma opção no menu superior para ver a tabela completa.</p>
+            </div>
+        </section>
+
+    </main>
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
