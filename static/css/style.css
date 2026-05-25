@@ -218,3 +218,37 @@ th {
 tr:hover {
     background-color: #f1f1f1;
 }
+
+
+/* =========================================
+   CABEÇALHO PRINCIPAL (NOME DO SITE)
+   ========================================= */
+.main-header {
+    background-color: #111a24; /* Azul super escuro, quase preto */
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+    border-bottom: 4px solid #4CAF50; /* Linha de destaque verde na base */
+}
+
+.main-header h1 {
+    font-size: 42px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Sombreado no texto */
+}
+
+.main-header .highlight {
+    color: #4CAF50; /* Verde vibrante */
+    font-weight: 900;
+}
+
+.main-header p {
+    font-size: 16px;
+    color: #bdc3c7; /* Cinza claro */
+    font-style: italic;
+    letter-spacing: 1px;
+}
