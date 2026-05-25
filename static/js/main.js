@@ -1,7 +1,9 @@
 const BASE_URL = ''; // Caminho relativo, pois está junto com o Flask
+let tabelaAtual = ''; // Lembra qual tabela está aberta
 
 // 1. Função para carregar as tabelas completas
 async function carregarDados(endpoint) {
+    tabelaAtual = endpoint; // Salva a tabela atual na memória
     const conteudo = document.getElementById('conteudo');
     const titulo = document.getElementById('titulo-pagina');
     
@@ -70,6 +72,10 @@ async function carregarTopEstatisticas() {
     } catch (erro) {
         console.error("Erro ao buscar o TOP estatísticas:", erro);
     }
+    //Se tiver alguma tabela aberta, atualiza
+    if (tabelaAtual !== '') {
+        carregarDados(tabelaAtual);
+    }
 }
 
 // 3.  Busca as estatísticas de UM ANO ESPECÍFICO
@@ -121,6 +127,10 @@ async function atualizarPorAno() {
     } catch (erro) {
         console.error("Erro ao buscar dados do ano:", erro);
         alert("Erro ao processar dados. O ano pode não existir no banco.");
+    }
+    // Se tiver alguma tabela aberta, atualiza ela também
+    if (tabelaAtual !== '') {
+        carregarDados(tabelaAtual);
     }
 }
 
