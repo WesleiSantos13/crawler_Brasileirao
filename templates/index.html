@@ -20,23 +20,29 @@
     <main class="container">
         
         <section class="estatisticas-section">
-            <h2>🏆 Recordes Históricos do Brasileirão</h2>
+            <h2 id="titulo-estatisticas">🏆 Recordes Históricos do Brasileirão</h2>
             
+            <div class="filtro-ano">
+                <input type="number" id="input-ano" placeholder="Digite o ano (Ex: 2023)">
+                <button class="btn-atualizar" onclick="atualizarPorAno()">Buscar por Ano</button>
+                <button class="btn-reset" onclick="carregarTopEstatisticas()">Ver Recordes Gerais</button>
+            </div>
+
             <div class="cards-grid">
                 <div class="card">
-                    <h3>👑 Maior Pontuador</h3>
+                    <h3 id="label-campeao">👑 Maior Pontuador</h3>
                     <p id="card-campeao" class="valor-card">Carregando...</p>
                 </div>
                 <div class="card">
-                    <h3>⚽ Maior Artilheiro</h3>
+                    <h3 id="label-artilheiro">⚽ Maior Artilheiro</h3>
                     <p id="card-artilheiro" class="valor-card">Carregando...</p>
                 </div>
                 <div class="card">
-                    <h3>👟 Líder de Assistências</h3>
+                    <h3 id="label-assistencia">👟 Líder de Assistências</h3>
                     <p id="card-assistencia" class="valor-card">Carregando...</p>
                 </div>
                 <div class="card">
-                    <h3>🔥 Rei do Hat-trick</h3>
+                    <h3 id="label-hattrick">🔥 Rei do Hat-trick</h3>
                     <p id="card-hattrick" class="valor-card">Carregando...</p>
                 </div>
             </div>
