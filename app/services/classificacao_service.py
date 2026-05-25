@@ -1,5 +1,5 @@
-from backend.app.database.connection import SessionLocal
-from backend.app.database.models import Classificacao
+from app.database.connection import SessionLocal
+from app.database.models import Classificacao
 
 def listar_classificacao():
     db = SessionLocal()

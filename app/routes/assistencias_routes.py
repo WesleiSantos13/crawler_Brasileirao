@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from backend.app.services.assistencias_service import listar_assistencias
+from app.services.assistencias_service import listar_assistencias
 from operator import itemgetter
 
 assistencias_bp = Blueprint("assistencias", __name__)

@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from backend.app.services.hattricks_service import listar_hattricks
+from app.services.hattricks_service import listar_hattricks
 
 hattricks_bp = Blueprint("hattricks", __name__)
 

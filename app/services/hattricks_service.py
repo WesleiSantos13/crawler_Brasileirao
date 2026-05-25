@@ -1,5 +1,5 @@
-from backend.app.database.connection import SessionLocal
-from backend.app.database.models import HatTrick
+from app.database.connection import SessionLocal
+from app.database.models import HatTrick
 
 def listar_hattricks():
     db = SessionLocal()
