@@ -5,15 +5,28 @@ async function carregarDados(endpoint) {
     const conteudo = document.getElementById('conteudo');
     const titulo = document.getElementById('titulo-pagina');
     
-    titulo.innerText = endpoint;
+    // Pega o ano que está digitado no campo de texto (se houver)
+    const ano = document.getElementById('input-ano').value; 
+
+    // Define a URL base e o título padrão
+    let url = `${BASE_URL}/${endpoint}`;
+    let textoTitulo = endpoint;
+
+    // Se o usuário digitou um ano, ajustamos a URL para a rota de filtro
+    if (ano) {
+        url = `${BASE_URL}/${endpoint}/ano/${ano}`;
+        textoTitulo = `${endpoint} de ${ano}`; // Ex: "artilharia de 2023"
+    }
+    
+    titulo.innerText = textoTitulo;
     conteudo.innerHTML = '<p>Carregando dados...</p>';
 
     try {
-        const resposta = await fetch(`${BASE_URL}/${endpoint}`);
+        const resposta = await fetch(url);
         const dados = await resposta.json();
 
         if (dados.length === 0) {
-            conteudo.innerHTML = '<p>Nenhum dado encontrado.</p>';
+            conteudo.innerHTML = `<p>Nenhum dado encontrado para ${textoTitulo}.</p>`;
             return;
         }
         conteudo.innerHTML = gerarTabela(dados);
