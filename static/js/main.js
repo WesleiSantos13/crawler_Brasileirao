@@ -25,12 +25,48 @@ async function carregarDados(endpoint) {
 
     try {
         const resposta = await fetch(url);
-        const dados = await resposta.json();
+        let dados = await resposta.json();
 
         if (dados.length === 0) {
             conteudo.innerHTML = `<p>Nenhum dado encontrado para ${textoTitulo}.</p>`;
             return;
         }
+
+        // --- INÍCIO DA ALTERAÇÃO ---
+        // Verifica se a tabela é de confrontos para traduzir os IDs
+        if (endpoint.includes('confrontos')) {
+            try {
+                // Busca a lista de times
+                const resTimes = await fetch(`${BASE_URL}/times`);
+                const times = await resTimes.json();
+
+                // Cria um dicionário para busca rápida { id: "Nome do Time" }
+                const mapaTimes = {};
+                times.forEach(t => {
+                    mapaTimes[t.id] = t.nome;
+                });
+
+                // Substitui os IDs pelos nomes e recria o objeto
+                dados = dados.map(jogo => {
+                    const jogoFormatado = { ...jogo };
+                    
+                    if ('mandante_id' in jogoFormatado) {
+                        jogoFormatado['Mandante'] = mapaTimes[jogoFormatado.mandante_id] || "Desconhecido";
+                        delete jogoFormatado.mandante_id; // Remove a coluna de ID
+                    }
+                    if ('visitante_id' in jogoFormatado) {
+                        jogoFormatado['Visitante'] = mapaTimes[jogoFormatado.visitante_id] || "Desconhecido";
+                        delete jogoFormatado.visitante_id; // Remove a coluna de ID
+                    }
+                    
+                    return jogoFormatado;
+                });
+            } catch (erroTimes) {
+                console.error("Erro ao buscar os times para converter os IDs:", erroTimes);
+            }
+        }
+        // --- FIM DA ALTERAÇÃO ---
+
         conteudo.innerHTML = gerarTabela(dados);
     } catch (erro) {
         console.error("Erro na tabela:", erro);
