@@ -24,14 +24,15 @@
 
     <main class="container">
         
+        <!-- MENU DE PESQUISA  -->
+        <div class="filtro-ano">
+            <input type="number" id="input-ano" placeholder="Digite o ano (Ex: 2023)">
+            <button class="btn-atualizar" onclick="atualizarPorAno()">Buscar por Ano</button>
+            <button class="btn-reset" onclick="carregarTopEstatisticas()">Ver Recordes Gerais</button>
+        </div>
+
         <section class="estatisticas-section">
             <h2 id="titulo-estatisticas">🏆 Recordes Históricos do Brasileirão</h2>
-            
-            <div class="filtro-ano">
-                <input type="number" id="input-ano" placeholder="Digite o ano (Ex: 2023)">
-                <button class="btn-atualizar" onclick="atualizarPorAno()">Buscar por Ano</button>
-                <button class="btn-reset" onclick="carregarTopEstatisticas()">Ver Recordes Gerais</button>
-            </div>
 
             <div class="cards-grid">
                 <div class="card">
