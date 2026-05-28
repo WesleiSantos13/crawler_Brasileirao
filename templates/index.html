@@ -8,24 +8,25 @@
 </head>
 <body>
 
+    <!-- 1. CABEÇALHO -->
     <header class="main-header">
         <h1>⚽ Raio-X <span class="highlight">Brasileirão (2023-2025)</span></h1>
         <p>O maior acervo de estatísticas e recordes do Campeonato Brasileiro</p>
     </header>
 
-   
+    <!-- PRIMEIRA METADE: RESUMO GERAL -->
     <main class="container">
-        
-        <!-- MENU DE PESQUISA  -->
-        <div class="filtro-ano">
-            <input type="number" id="input-ano" placeholder="Digite o ano (Ex: 2023)">
-            <button class="btn-atualizar" onclick="atualizarPorAno()">Buscar por Ano</button>
-            <button class="btn-reset" onclick="carregarTopEstatisticas()">Ver Recordes Gerais</button>
-        </div>
-
         <section class="estatisticas-section">
             <h2 id="titulo-estatisticas">🏆 Recordes Históricos do Brasileirão</h2>
 
+            <!-- 2. FILTROS GLOBAIS (Logo abaixo do título) -->
+            <div class="filtro-ano">
+                <input type="number" id="input-ano" placeholder="Digite o ano (Ex: 2023)">
+                <button class="btn-atualizar" onclick="atualizarPorAno()">Buscar por Ano</button>
+                <button class="btn-reset" onclick="carregarTopEstatisticas()">Ver Recordes Gerais</button>
+            </div>
+
+            <!-- 3. RESUMO (CARDS) -->
             <div class="cards-grid">
                 <div class="card">
                     <h3 id="label-campeao">👑 Maior Pontuador</h3>
@@ -45,23 +46,33 @@
                 </div>
             </div>
         </section>
-        <nav class="top-nav">
-                <button onclick="carregarDados('artilharia')">Artilheiros</button>
-                <button onclick="carregarDados('participantes')">Participantes</button>
-                <button onclick="carregarDados('hattricks')">Hat-tricks</button>
-                <button onclick="carregarDados('classificacao')">Classificação</button>
-                <button onclick="carregarDados('confrontos')">Confrontos</button>
-                <button onclick="carregarDados('assistencias')">Assistências</button>
-            </nav>
-
-        <section class="tabela-section">
-            <h2 id="titulo-pagina">Tabela de Dados</h2>
-            <div id="conteudo">
-                <p style="text-align: center; color: #666;">Selecione uma opção no menu superior para ver a tabela completa.</p>
-            </div>
-        </section>
-
     </main>
+
+    <!-- SEGUNDA METADE: MENU E TABELA UNIDOS -->
+    <!-- Este bloco escuro vai de ponta a ponta e "abraça" o menu e a tabela -->
+    <section style="background-color: #1e2b3c; padding: 20px 0 50px 0; margin-top: 20px;">
+        
+        <!-- 4. MENU DE NAVEGAÇÃO -->
+        <nav class="top-nav" style="padding: 10px 20px 30px 20px;">
+            <button onclick="carregarDados('artilharia')">Artilheiros</button>
+            <button onclick="carregarDados('participantes')">Participantes</button>
+            <button onclick="carregarDados('hattricks')">Hat-tricks</button>
+            <button onclick="carregarDados('classificacao')">Classificação</button>
+            <button onclick="carregarDados('confrontos')">Confrontos</button>
+            <button onclick="carregarDados('assistencias')">Assistências</button>
+        </nav>
+
+        <!-- 5. DETALHES (TABELA) -->
+        <div class="container" style="padding-top: 0; padding-bottom: 0;">
+            <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.3);">
+                <h2 id="titulo-pagina" style="color: #1e2b3c; border-bottom: 2px solid #ddd; padding-bottom: 10px; margin-bottom: 20px;">Tabela de Dados</h2>
+                <div id="conteudo">
+                    <p style="text-align: center; color: #666;">Selecione uma opção no menu superior para ver a tabela completa.</p>
+                </div>
+            </div>
+        </div>
+
+    </section>
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
