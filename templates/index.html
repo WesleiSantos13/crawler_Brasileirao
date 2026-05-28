@@ -23,7 +23,7 @@
     </section>
 
     <main class="container" style="margin-top: 30px;">
-        <section class="estatisticas-section">
+        <section class="estatisticas-section" style="box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #e1e8ed;">
             <h2 id="titulo-estatisticas">🏆 Recordes Históricos do Brasileirão</h2>
 
             <div class="cards-grid">
@@ -47,9 +47,8 @@
         </section>
     </main>
 
-    <section style="background-color: #1e2b3c; padding: 20px 0 50px 0;">
-        
-        <nav class="top-nav" style="padding: 10px 20px 30px 20px; background: transparent;">
+    <div style="background-color: #1e2b3c; padding: 15px 0; border-top: 1px solid #111a24; border-bottom: 1px solid #111a24;">
+        <nav class="top-nav" style="background: transparent; padding: 0; margin: 0;">
             <button onclick="carregarDados('artilharia')">Artilheiros</button>
             <button onclick="carregarDados('participantes')">Participantes</button>
             <button onclick="carregarDados('hattricks')">Hat-tricks</button>
@@ -57,17 +56,20 @@
             <button onclick="carregarDados('confrontos')">Confrontos</button>
             <button onclick="carregarDados('assistencias')">Assistências</button>
         </nav>
+    </div>
 
-        <div class="container" style="padding-top: 0; padding-bottom: 0;">
-            <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.3);">
-                <h2 id="titulo-pagina" style="color: #1e2b3c; border-bottom: 2px solid #ddd; padding-bottom: 10px; margin-bottom: 20px;">Tabela de Dados</h2>
-                <div id="conteudo">
-                    <p style="text-align: center; color: #666;">Selecione uma opção no menu superior para ver a tabela completa.</p>
-                </div>
+    <main class="container" style="margin-top: 40px; margin-bottom: 80px;">
+        <div style="background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); border: 1px solid #e1e8ed;">
+            <h2 id="titulo-pagina" style="color: #2c3e50; border-bottom: 2px solid #f4f7f6; padding-bottom: 15px; margin-bottom: 25px; text-transform: uppercase; font-size: 20px; letter-spacing: 1px;">
+                Tabela de Dados
+            </h2>
+            <div id="conteudo">
+                <p style="text-align: center; color: #888; padding: 30px 0; font-size: 16px;">
+                    Selecione uma opção no menu superior para ver a tabela completa.
+                </p>
             </div>
         </div>
-
-    </section>
+    </main>
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
