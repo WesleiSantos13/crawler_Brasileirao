@@ -79,7 +79,7 @@ async function carregarDados(endpoint) {
 
 // 2. Busca os "Top 1" HISTÓRICOS (Recordes Gerais)
 async function carregarTopEstatisticas() {
-    document.getElementById('titulo-estatisticas').innerText = "🏆 Recordes Históricos do Brasileirão";
+    document.getElementById('titulo-estatisticas').innerText = "🏆 Estatisticas do Brasileirão";
     document.getElementById('label-campeao').innerText = "👑 Maior Pontuador";
     document.getElementById('input-ano').value = ""; 
 
