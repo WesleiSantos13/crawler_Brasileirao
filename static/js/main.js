@@ -3,60 +3,61 @@ let tabelaAtual = ''; // Lembra qual tabela está aberta
 
 // 1. Função para carregar as tabelas completas
 async function carregarDados(endpoint) {
-    tabelaAtual = endpoint; // Salva a tabela atual na memória
+    tabelaAtual = endpoint; 
     const conteudo = document.getElementById('conteudo');
     const titulo = document.getElementById('titulo-pagina');
     
-    // Pega o ano que está digitado no campo de texto (se houver)
     const ano = document.getElementById('input-ano').value; 
 
-    // Define a URL base e o título padrão
     let url = `${BASE_URL}/${endpoint}`;
     let textoTitulo = endpoint;
 
-    // Se o usuário digitou um ano, ajustamos a URL para a rota de filtro
     if (ano) {
         url = `${BASE_URL}/${endpoint}/ano/${ano}`;
-        textoTitulo = `${endpoint} de ${ano}`; // Ex: "artilharia de 2023"
+        textoTitulo = `${endpoint} de ${ano}`; 
     }
     
     titulo.innerText = textoTitulo;
-    conteudo.innerHTML = '<p>Carregando dados...</p>';
+
+    // ---  (Salva a altura da tabela atual) ---
+    const alturaAtual = conteudo.offsetHeight;
+    if (alturaAtual > 50) {
+        conteudo.style.minHeight = `${alturaAtual}px`;
+    }
+
+    conteudo.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">Carregando dados...</p>';
 
     try {
         const resposta = await fetch(url);
         let dados = await resposta.json();
 
         if (dados.length === 0) {
-            conteudo.innerHTML = `<p>Nenhum dado encontrado para ${textoTitulo}.</p>`;
+            conteudo.innerHTML = `<p style="text-align: center; color: #666;">Nenhum dado encontrado para ${textoTitulo}.</p>`;
+            conteudo.style.minHeight = 'auto'; // Libera a altura se não houver dados
             return;
         }
 
-        // --- INÍCIO DA ALTERAÇÃO ---
         // Verifica se a tabela é de confrontos para traduzir os IDs
         if (endpoint.includes('confrontos')) {
             try {
-                // Busca a lista de times
                 const resTimes = await fetch(`${BASE_URL}/times`);
                 const times = await resTimes.json();
 
-                // Cria um dicionário para busca rápida { id: "Nome do Time" }
                 const mapaTimes = {};
                 times.forEach(t => {
                     mapaTimes[t.id] = t.nome;
                 });
 
-                // Substitui os IDs pelos nomes e recria o objeto
                 dados = dados.map(jogo => {
                     const jogoFormatado = { ...jogo };
                     
                     if ('mandante_id' in jogoFormatado) {
                         jogoFormatado['Mandante'] = mapaTimes[jogoFormatado.mandante_id] || "Desconhecido";
-                        delete jogoFormatado.mandante_id; // Remove a coluna de ID
+                        delete jogoFormatado.mandante_id; 
                     }
                     if ('visitante_id' in jogoFormatado) {
                         jogoFormatado['Visitante'] = mapaTimes[jogoFormatado.visitante_id] || "Desconhecido";
-                        delete jogoFormatado.visitante_id; // Remove a coluna de ID
+                        delete jogoFormatado.visitante_id; 
                     }
                     
                     return jogoFormatado;
@@ -65,12 +66,14 @@ async function carregarDados(endpoint) {
                 console.error("Erro ao buscar os times para converter os IDs:", erroTimes);
             }
         }
-        // --- FIM DA ALTERAÇÃO ---
 
         conteudo.innerHTML = gerarTabela(dados);
     } catch (erro) {
         console.error("Erro na tabela:", erro);
-        conteudo.innerHTML = `<p style="color: red;">Erro ao carregar os dados.</p>`;
+        conteudo.innerHTML = `<p style="color: red; text-align: center;">Erro ao carregar os dados.</p>`;
+    } finally {
+        // --- LIBERA A ALTURA (Permite que a nova tabela defina o tamanho da página) ---
+        conteudo.style.minHeight = 'auto';
     }
 }
 
@@ -78,7 +81,7 @@ async function carregarDados(endpoint) {
 async function carregarTopEstatisticas() {
     document.getElementById('titulo-estatisticas').innerText = "🏆 Recordes Históricos do Brasileirão";
     document.getElementById('label-campeao').innerText = "👑 Maior Pontuador";
-    document.getElementById('input-ano').value = ""; // Limpa o campo do ano
+    document.getElementById('input-ano').value = ""; 
 
     colocarCardsEmModoCarregando();
 
@@ -108,13 +111,13 @@ async function carregarTopEstatisticas() {
     } catch (erro) {
         console.error("Erro ao buscar o TOP estatísticas:", erro);
     }
-    //Se tiver alguma tabela aberta, atualiza
+    
     if (tabelaAtual !== '') {
         carregarDados(tabelaAtual);
     }
 }
 
-// 3.  Busca as estatísticas de UM ANO ESPECÍFICO
+// 3. Busca as estatísticas de UM ANO ESPECÍFICO
 async function atualizarPorAno() {
     const ano = document.getElementById('input-ano').value;
     
@@ -123,29 +126,25 @@ async function atualizarPorAno() {
         return;
     }
 
-    // Muda os títulos para fazer sentido com a busca anual
     document.getElementById('titulo-estatisticas').innerText = `📊 Estatísticas do Ano de ${ano}`;
     document.getElementById('label-campeao').innerText = "👑 Campeão do Ano";
 
     colocarCardsEmModoCarregando();
 
     try {
-        // CAMPEÃO (Pega o 1º da classificação daquele ano)
         const resClass = await fetch(`${BASE_URL}/classificacao/ano/${ano}`);
         const dadosClass = await resClass.json();
         if(dadosClass.length > 0) {
             document.getElementById('card-campeao').innerText = `${dadosClass[0].time} (${dadosClass[0].pontos} pts)`;
         } else { document.getElementById('card-campeao').innerText = "Sem dados"; }
 
-        // ARTILHEIRO (Pega o 1º da artilharia daquele ano)
         const resArt = await fetch(`${BASE_URL}/artilharia/ano/${ano}`);
         const dadosArt = await resArt.json();
         if(dadosArt.length > 0) {
-            dadosArt.sort((a, b) => b.gols - a.gols); // Garante que o maior venha primeiro
+            dadosArt.sort((a, b) => b.gols - a.gols); 
             document.getElementById('card-artilheiro').innerText = `${dadosArt[0].jogador} (${dadosArt[0].gols} gols)`; 
         } else { document.getElementById('card-artilheiro').innerText = "Sem dados"; }
 
-        // ASSISTÊNCIAS (Pega o 1º das assistências daquele ano)
         const resAss = await fetch(`${BASE_URL}/assistencias/ano/${ano}`);
         const dadosAss = await resAss.json();
         if(dadosAss.length > 0) {
@@ -153,7 +152,6 @@ async function atualizarPorAno() {
             document.getElementById('card-assistencia').innerText = `${dadosAss[0].jogador} (${dadosAss[0].assistencias} ass)`;
         } else { document.getElementById('card-assistencia').innerText = "Sem dados"; }
 
-        // HAT-TRICKS (Pega o 1º destaque de hat-tricks daquele ano)
         const resHat = await fetch(`${BASE_URL}/hattricks/ano/${ano}`);
         const dadosHat = await resHat.json();
         if(dadosHat.length > 0) {
@@ -164,7 +162,7 @@ async function atualizarPorAno() {
         console.error("Erro ao buscar dados do ano:", erro);
         alert("Erro ao processar dados. O ano pode não existir no banco.");
     }
-    // Se tiver alguma tabela aberta, atualiza ela também
+    
     if (tabelaAtual !== '') {
         carregarDados(tabelaAtual);
     }
@@ -193,7 +191,6 @@ function gerarTabela(arrayDeObjetos) {
     return tabelaHTML;
 }
 
-// Dispara o carregamento dos painéis TOP automaticamente quando a página abrir
 window.onload = () => {
     carregarTopEstatisticas();
 };
